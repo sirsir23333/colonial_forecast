@@ -1,0 +1,104 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+This project predicts Colonial Pipeline (CPL) gasoline throughput, specifically Line 1 flows into PADD 1, using two complementary analytical methods and transit time data.
+
+## Goal
+Estimate CPL Line 1 throughput into PADD 1 using physical constraints and market data validation.
+
+## Data Sources
+
+### Primary Data
+- **EIA Pipeline Data**: PADD 3 → PADD 1 flows by pipeline (monthly) in `data/gasoline_pipeline_EIA.csv` and `data/gasoil_pipline_EIA.csv`
+- **Transit Times**: Daily cycle-by-cycle transit times for different lines in `data/colonial_transit_time.xlsx`
+- **Email Extraction**: Colonial Pipeline transit bulletins scraped from Outlook (`data/ScrapeEmail.py`)
+
+### Pipeline Specifications
+- **Line 1**: 1.37 mb/d capacity, gasoline, 1049 miles, 36-40 inch diameter
+- **Line 2**: 1.16 mb/d capacity, gasoil  
+- **Line 3**: 0.885 mb/d capacity, multi-product
+
+## Methodology
+
+### Method 1: Physical Throughput Bounds
+Uses Little's Law: **Linefill = Throughput × Transit Time**
+
+1. **Line Volume Calculation**: 
+   - 36" diameter: ~6.9 mbd implied cycle volume
+   - 40" diameter: ~8.1 mbd implied cycle volume
+2. **Throughput Estimation**: Volume ÷ Average Transit Time
+3. **Key Assumption**: Line 1 operates at maximum utilization with no intermediate distribution
+
+### Method 2: EIA Flow Split  
+1. Start with total EIA PADD 3 → PADD 1 pipeline volumes
+2. Apply 65% share split between Colonial and Plantation Pipeline (PPL)
+3. **Share Calculation**: Colonial 1.37 mb/d ÷ (Colonial 1.37 + Plantation 0.72) = 0.656 ≈ 0.65
+
+### Validation & Visualization
+- Plot Method 1 vs Method 2 results for consistency analysis
+- Identify gaps and inconsistencies between physical bounds and market data
+
+## Development Environment
+
+### Python Setup
+**Python Executable**: `/Users/zhangsiwei/miniconda3/envs/cleanenv/bin/python`
+
+```bash
+pip install -r requirements.txt
+jupyter lab
+```
+
+### Key Libraries
+- **Data**: pandas, numpy, scipy
+- **Visualization**: plotly, matplotlib, seaborn  
+- **ML**: scikit-learn, lightgbm, optuna, pmdarima
+- **Email Processing**: win32com.client, beautifulsoup4
+
+## Architecture & Key Files
+
+### Analysis Notebooks
+- `colonial_pipeline_forcast_line1.ipynb`: Main Line 1 throughput analysis
+- `data/data_pulling.ipynb`: Data acquisition and preprocessing
+- `correlation.ipynb`: Transit time vs incentive arbitrage correlation analysis
+
+### Core Processing
+- `data/ScrapeEmail.py`: Email extraction with configurable From/To parameters (HTN → GBJ)
+- Transit time processing: Latest cycle per year, gas days + hours conversion
+- Monthly aggregation: Average gas transit times by month
+
+## Work in Progress
+
+### Correlation Analysis
+- Compare Line 1 & Line 3 incentive arbitrages with transit times
+- Cross-validate against EIA monthly data
+
+### Geographic Refinement  
+- Identify PADD 1 delivery points closer than GBR (currently using ATJ)
+- Build node-to-node transit time estimates including junction times
+- Fix inconsistencies in implied throughput ranges
+
+### Data Expansion
+- Increase historical coverage from T4 transit bulletins
+- Build implied Line 1 transit times using Line 1 + Line 3 combined data
+- Derive implied ranges for comparison with actual EIA data
+
+## Key Parameters & Formulas
+
+### Transit Time Bounds
+- Lower bound: 7.0 (36" throughout capacity)
+- Upper bound: 8.61 (40" throughout capacity) 
+- Formula: **Q = L/T** where L = capacity parameter, T = transit time
+
+### Pipeline Share Split
+- **Colonial Pipeline**: 1.37 mb/d capacity
+- **Plantation (SE) Pipeline**: 0.72 mb/d capacity  
+- **Colonial Share**: 1.37 ÷ (1.37 + 0.72) = 0.656 ≈ **0.65**
+
+## Important Notes
+- Email extraction requires Windows with Outlook COM interface
+- Transit times measured HTN (Houston Terminal) → GBJ (Greensboro Junction)
+- Colonial vs Plantation split based on published pipeline capacities
+- Method assumes Line 1 maximum utilization scenarios
