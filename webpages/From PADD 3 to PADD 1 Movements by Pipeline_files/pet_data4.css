@@ -1,0 +1,516 @@
+<style type="text/css">
+	table tr td, table tr th {
+		max-width: 914px;
+	}
+	.l-inner-wrapper table {
+		background-color: transparent;
+	}
+	TD.Blank {}
+
+	SELECT.B {font-family : Arial, Helvetica, sans-serif; font-size : 9pt ;}
+	SELECT.C {font-family : Arial, Helvetica, sans-serif; font-size : 9pt ;}
+	
+	input.SmallCheck {
+		height: 12px;
+		width: 12px;
+	}
+	table.data1 {
+		border-width: 0px;
+		border-style: none;
+		border-color: transparent;
+		border-collapse: collapse;
+		width: auto;
+		border-bottom: 1px solid #0096d7;
+	}
+	table.data1 th {
+		text-align: right;
+	}
+	table.data1 td {
+		padding: 6px 4px;
+		border-style: inset;
+		border: none;
+		border-bottom: 1px dashed #d8d8d8;
+	}
+
+	table.data2 {
+		border-width: 0px;
+		border-color: white;
+	}
+	table.data2 td {
+		border-width: 0px;
+		padding: 0px;
+		border-style: none;
+		border-color: white;
+		padding: 4px 4px;
+	}
+	TABLE.BckGold {
+		background-color : #cccc99;
+	}
+	TABLE.UserBar {
+		background-color : #ffffff;
+		margin: 20px 0px 10px 0px;
+	}
+	TABLE.UserBar2 {
+		background-color : #dddddd;
+	}
+	TABLE.UserBar3 {
+		background-color : #ffffff;
+	}
+	.l-outer-wrapper .l-inner-wrapper TABLE.TopicBar {
+		background-color : #ffffff;
+		border-bottom: 1px solid #d8d8d8;
+		padding-bottom: 1em;
+		width: 100%;
+	}
+	.l-outer-wrapper .l-inner-wrapper TABLE.TopicBar td{
+		width: auto;
+	}
+	TH.Period {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #ffffff;
+		font-size : 9pt;
+		background-color : #336699;
+		vertical-align : middle;
+	}
+	TH.Prior {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #ffffff;
+		font-size : 9pt;
+		background-color : #6699cc;
+		vertical-align : middle;
+	}
+	TH.Current {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #ffffff;
+		font-size : 9pt;
+		background-color : #cccc99;
+		vertical-align : middle;
+	}
+	TH.Cross {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size: 8pt;
+		font-weight : bold;
+		text-align: right;
+		padding: 2px 4px;
+		vertical-align : bottom;
+	}
+	table.data1 th.CROSS {
+		padding: 2px 4px;
+	}
+	TH.Cross2 {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 8pt;
+		font-weight : bold;
+		vertical-align : bottom;
+		padding: 2px 4px;
+		background: #f7f7f7;
+	}
+	th.Cross2 a {
+		color: #0078ac;
+	}
+	TH.Cross3 {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 8pt;
+		font-weight : bold;
+		vertical-align : bottom;
+		padding: 2px 4px;
+	}	
+	TH.Series {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 8pt ;
+		vertical-align : bottom;
+		font-weight : bold;
+		text-align : center;
+	}
+	TH.Series2 {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 8pt ;
+		vertical-align : bottom;
+		font-weight : bold;
+		text-align : center;
+	}
+	TH.Series3 {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 9pt ;
+		vertical-align : bottom;
+		font-weight : bold;
+		text-align : center;
+	}
+	TH.Series3B {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 9pt ;
+		vertical-align : bottom;
+		font-weight : bold;
+		text-align : center;
+	}	
+	TH.Series4 {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #333333;
+		font-size : 8pt ;
+		font-weight : bold;
+		background-color : #f7f7f7;
+		text-align : left;
+	}
+	TH.Series5 {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #ffffff;
+		font-size : 9pt ;
+		vertical-align : bottom;
+		font-weight : bold;
+		text-align : center;
+	}
+	table.data1 tr TH.Series5 {
+		font-family : Arial, Helvetica, sans-serif;
+		color: #333333;
+		font-size : 9pt;
+		vertical-align : bottom;
+		padding: 2px 4px 2px 0px;
+		font-weight : bold;
+		text-align: right;
+	}
+	TH.History {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #ffffff;
+		font-size : 9pt;
+		background-color : #336699;
+		vertical-align : middle;
+		font-weight : bold;
+	}
+	TR.DataRow {background-color : #ffffff;}
+	TD.DataA {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 9pt;
+		text-align : right;
+	}
+	TD.DataS {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 9pt;
+		text-align : right;
+		background-color : #f7f7f7;		
+	}	
+	TD.DataS2 {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 9pt;
+		text-align : right;
+		background-color : #ffffff;		
+	}	
+	TD.DataA2 {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #333333;
+		font-size : 8pt;
+		vertical-align : top;		
+	}	
+	TD.DataB {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 9pt;
+		text-align : right;
+		vertical-align : middle
+	}
+	TD.Block {
+		background-color : #cccccc;
+	}
+	TD.Navy {
+		background-color : #003399;
+	}
+	TD.TableBreak {
+		background-color : #cccccc;
+	}
+	TD.DataStub {
+		font-family : Arial, Helvetica, sans-serif;
+		color :  #333333;
+		font-size : 9pt;
+	}
+	TD.DataStubB {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #007eb5;
+		font-size : 8pt;
+		background-color : #ffffcc;
+		font-weight : bold;
+	}
+	TD.DataStubC {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #007eb5;
+		font-size : 8pt;
+		background-color : #CCCC99;
+		font-weight : bold;
+	}
+	TD.DataStub1 {
+		font-family : Arial, Helvetica, sans-serif;
+		color: #333333;
+		font-size : 9pt;
+		/* background-color : #ffffe1; */
+	}
+	table.data1 tr TD.DataStub2 {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 9pt;
+		font-weight: bold;
+		border-top: 1px solid #0096d7;
+		border-bottom-style: solid;
+	}
+	table.data2 tr TD.DataStub2 {
+		border-top: none;
+		border-bottom: none;
+		padding: 0px;
+	}
+	TD.DataHist {
+		font-family : Arial, Helvetica, sans-serif;
+		color: #333333;
+		font-size : 9pt;
+		text-align: right;
+		vertical-align: middle;
+		background-color: #f7f7f7;
+	}
+	td.DataHist a {
+		color: #0078ac;
+	}
+	TD.LShade {
+		background-color : #838383;
+	}
+	TD.Current {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #333333;
+		font-size : 8pt;
+		text-align : right;
+	}
+	TD.Current2 {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #333333;
+		font-size : 9pt;
+		text-align : right;
+		vertical-align : middle
+	}
+	TD.FuelHeader {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #336666;
+		font-size : 14pt;
+		font-weight : bold;
+		text-align : center;
+	}
+	TD.LabelA {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 9pt;
+		font-weight : bold;
+	}
+	TD.LabelB {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #333333;
+		font-size : 9pt;
+		font-weight : bold;
+	}
+	TD.LabelC {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #6f6f6f;
+		font-size : 9pt;
+		font-weight : bold;
+	}
+	TD.TopLabel {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #ffffcc;
+		font-size : 12pt;
+		font-weight : bold;
+	}
+	TD.TopLabel2 {
+		font-family : Arial, Helvetica, sans-serif;
+		color: #333333;
+		font-size : 14pt;
+		font-weight : bold;
+		text-align : left;
+	}
+	TD.ViewA {
+		font-family : Arial, Helvetica, sans-serif;
+		font-weight : bold;
+		color : #007eb5;
+		font-size :8pt;
+	}
+	TD.Info {
+		font-family : Arial, Helvetica, sans-serif;
+		color : #007eb5;
+		font-size : 9pt;
+	}
+	TD.Footnotes {
+		font-family : Arial, Helvetica, sans-serif;
+		padding-left: 4px;
+		padding-top: 4px;
+		font-size : 9pt;
+	}
+	TD.ViewLabel {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 8pt;
+		color: #333333;
+		font-weight: bold;
+		font-style: italic;
+		position: relative;
+		left: -2px;
+	}
+	TD.BelowLinks {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 9pt;
+	}
+	TD.Title {
+		font-family : Arial, Helvetica, sans-serif;
+		color: #333333;
+		font-size : 11pt;
+		font-weight : bold;
+	}
+	TD.TitleB {
+		font-family : Arial, Helvetica, sans-serif;
+		color: #333333;
+		font-size : 14pt;
+
+	}
+	TD.SecHeader {
+		font-family : Arial, Helvetica, sans-serif;
+		color: Green;
+		font-size : 10pt;
+		font-weight : bold;
+	}
+	TD.TitleUnit {
+		font-family : Arial, Helvetica, sans-serif;
+		font-size : 9pt;
+	}
+	SPAN.FNlabel {
+		font-weight : bold;
+	}
+	SPAN.BelowLabel {
+		font-weight : bold;
+		color:  Green;
+	}
+	SPAN.BlockLabel {
+		font-weight : normal;
+		font-size : 8pt;
+	}
+	SPAN.Unit {
+		color: #333333;
+		font-weight : normal;
+		font-size : 8pt;
+	}
+	DIV.A2 {
+		text-align : right;
+	}
+	
+	table.data1 tr:nth-child(2) th, table.data1 tr:nth-child(3) th {
+		border-bottom: 3px solid #0096d7;
+	}
+	table.data1 tr th[colspan].Series3, table.data1 tr th[colspan].Series3B {
+		border-bottom: 1px solid #d8d8d8;
+		border-right: 3px solid white;
+		text-align: left;
+	}
+	table.data1 tr th[rowspan] {
+		vertical-align: bottom;
+	}
+	.l-outer-wrapper .l-inner-wrapper table {
+		max-width: 914px;
+		width: auto;
+	}
+	.l-outer-wrapper .l-inner-wrapper > table {
+		margin: 0 22px;
+	}
+	@media (max-width: 940px) {
+		.l-outer-wrapper .l-inner-wrapper > table {
+			margin: 0 12px;
+		}
+		.l-outer-wrapper .l-inner-wrapper {
+			overflow-x: scroll;
+		}
+	}
+	.l-outer-wrapper .l-inner-wrapper > table.data1 {
+		margin-top: 10px;
+	}
+	.l-outer-wrapper .l-inner-wrapper table tr td{
+		vertical-align: middle;
+	}
+	.l-outer-wrapper .l-inner-wrapper table tr td[background*='shade'] {
+		background: none;
+		border-top: 1px solid #0096d7;
+		border-bottom-style: solid;
+	}
+	table:has(+ table.data1) {
+		border-bottom: 1px solid #d8d8d8;
+		padding-bottom: 10px;
+	}
+
+	table.data2 td[width='10'] {
+		width: 0px;
+		padding: 0px;
+	}
+	.l-outer-wrapper .l-inner-wrapper table img[src*='Radio'] {
+		display: none;
+	}
+	a:has(img[src*='Radio'])::before {
+		content: ' ';
+		position: relative;
+		display: block;
+		width: 10px;
+		height: 10px;
+		border-radius: 100%;
+		border: 1px solid #0096d7;
+	}
+	a:has(img[src*='Radio_A'])::before {
+		background: radial-gradient(circle, rgba(0, 150, 215, 1) 0%, rgba(0, 150, 215, 1) 45%, rgba(255, 255, 255, 1) 45%);
+	}
+	div#tlinks table.data2 td {
+		width: min-content;
+		padding: 4px 0px 6px 0px;
+	}
+
+	div#tlinks {
+		margin-bottom: 10px;
+	}
+	#tlinks img {
+		width: 18px;
+		height: auto;
+	}
+	table.UserBar td {
+		width: auto;
+	}
+	table.UserBar select {
+		margin: 0px 10px 0px 4px;
+	}
+
+	table tr td[width]:has(img[src*='spacer']), table td img[src*='gif'] {
+		margin-top: 10px;
+		width: 0px;
+		padding: 0px;
+	}
+	table tr td[width='5']:has(img[src*='spacer']) {
+		padding: 0px;
+		width: auto;
+	}
+	.NavChunkA {
+		padding-right: 8px;
+	}
+	
+
+	table.data1 tr.DataRow:last-of-type table {
+		/* padding-bottom: 6px; */
+	}
+
+	th.Series table tr td:empty {
+		height: 0px;
+		padding: 0px;
+	}
+
+	.l-outer-wrapper .l-inner-wrapper th table tr td:empty {
+		width: 0px;
+		height: 0px;
+		padding: 0px;
+	}
+
+	th.Series table tr td:empty {}
+
+	th.Cross br {
+		/* display: none; */
+		/* display: none; */
+		margin-left: 2px;
+	}
+
+	th.Series button {
+		margin: 0px 3px 4px 0px;
+	}
+
+	table.data2 td.DataStub1 {
+		padding: 0px;
+	}
+
+</style>

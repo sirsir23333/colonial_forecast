@@ -1,0 +1,164 @@
+@media print and (color) {
+	header .print img {
+		height: auto;
+		top: 0px;
+	}
+	.tie-theme * {
+		font-family: jost, sans-serif;
+	}
+	.tie-theme h1, .tie-theme h2, .tie-theme h3, .tie-theme h4 {
+		font-weight: 700;
+	}
+	.tie-theme h1 {
+		font-size: 1.5rem;
+		margin-bottom: 0.5em;
+		color: #333333;
+	}
+	.tie-theme .title-banner {
+		margin-top: 1em;
+		margin-bottom: 2em;
+	}
+	.tie-theme .title-banner h1 {
+		font-size: 1.15rem;
+	}
+	.tie-theme .tie-section img {
+		max-width: 100%;
+	}
+	.tie-theme .tie-section img[src*=".svg"] {
+		width: 100%;
+	}
+	.tie-theme .article-type {
+		margin: 1em 0em;
+		font-size: 1rem;
+	}
+	.tie-theme .tie-section .source {
+		margin: 0.5em 0em;
+		font-size: 0.875rem;
+		font-style: normal;
+	}
+	.tie-theme .tie-section hr {
+		background: none;
+		border: none;
+		border-top: 1px dashed #d4d4d4;
+	}
+	.tie-theme .tie-section .source + hr, .tie-theme .tie-section img + hr {
+		margin: 1.5em 0em;
+	}
+	.article-type {
+		font-weight: bold;
+		font-size: 1.15em;
+		text-transform: uppercase;
+		color: #595959;
+	}
+	.article-type:before {
+		background-color: #70d4ff;
+		content: "";
+		display: inline-block;
+		font-weight: 700;
+		line-height: 1.4em;
+		height: 14px;
+		width: 8px;
+		margin-right: 4px;
+		margin-top: 0px;
+		transform: skew(-20deg,0deg);
+	}
+	.tie-theme .browse-by-tag .tag-list {
+		display: block!important;
+		columns: 2;
+	}
+	.tie-archive-section, .tie-theme fieldset, top-container * {
+		display: none;
+	}
+	.smallestTag, .smallTag, .mediumTag, .largeTag, .largestTag {
+		padding-left:6px;
+	}
+	.smallestTag { font-size: 10px; }
+	.smallTag { font-size: 14px; }
+	.mediumTag { font-size: 20px; }
+	.largeTag { font-size: 30px; }
+	.largestTag { font-size: 36px; }
+	#section2 {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+
+	#s2_right {
+	margin-top: 0px!important;
+	display:block;
+	height: auto!important;
+	}
+	#clearone {display: none;}
+	.t_source{
+	font-family: jost, sans-serif;
+	font-size: 8pt;
+	width: 100%;
+	margin-top: 2em;
+	border-top: 1px solid #d8d8d8;
+	}
+	#note_nymex {
+	font-family: jost, sans-serif;
+	font-size: 8pt;
+	display:table;
+	width:500px;
+	}
+	.t1, .t4 {width: 500px;}
+	.panel_header_prices {display:none;}
+	.sdiv, .sp2, .sp, .sp1 {border-bottom:none !important;/*display:none;*/}
+	.hide_display {display:none;}
+	.prices_table_title, .prices_table_title td, .prices_table_title b {
+		font-size: 13px;
+		border:none;
+	}
+	table.basic-table tbody tr.prices_table_title th {
+		border-bottom: 3px solid #0096d7;
+		font-weight: bold!important;
+		border-top: none;
+		vertical-align: bottom;
+		text-align: right;
+	}
+	table.basic-table tbody tr.prices_table_title th:first-child, table.basic-table tbody tr.prices_table_title th.h2, table.basic-table tbody tr td.s2 {
+		text-align: left;
+	}
+	tr.prices_table_title + tr.prices_table_title + tr.prices_table_title th {
+		text-align: right;
+	}
+	table.basic-table tbody tr.prices_table_title + tr td {
+		border-top: none;
+	}
+	table.basic-table tbody tr.prices_table_title th[colspan] {
+		border-bottom: 1px solid #d8d8d8;
+	}
+	table.basic-table tbody tr td.prices_table_title {
+		border-top: none;
+		border-bottom: 3px solid #0096d7;
+	}
+	table.basic-table tbody tr td.sp2, table.basic-table tbody tr:first-child + tr td {
+		border-top: none!important;
+	}
+	table.basic-table tbody tr td[rowspan]+td {
+		text-align: left;
+	}
+	td.up::after  {
+		content: " ";
+		display: inline-block;
+		float: none;
+		height: 14px;
+		margin-left: 3px;
+		position: relative;
+		top: 4px;
+		width: 12px;
+		background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 12'%3E%3Cpath fill='%235d9732' d='M9 7.8 5 1 1 7.8h2.4V11h3.2V7.8H9z'/%3E%3C/svg%3E") no-repeat 50%;
+	}
+	td.dn::after {
+		content: " ";
+		display: inline-block;
+		float: none;
+		height: 14px;
+		margin-left: 3px;
+		position: relative;
+		top: 4px;
+		width: 12px;
+		background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 12'%3E%3Cpath fill='%23513c7a' d='M1 4.2 5 11l4-6.8H6.6V1H3.4v3.2H1z'/%3E%3C/svg%3E") no-repeat 50%;
+	}
+}
