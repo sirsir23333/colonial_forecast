@@ -72,8 +72,12 @@ jupyter lab
 ## Work in Progress
 
 ### Correlation Analysis
-- Compare Line 1 & Line 3 incentive arbitrages with transit times
-- Cross-validate against EIA monthly data
+- **Comprehensive Pairwise Analysis**: Test all pipeline combinations (Line 1 vs Line 3, Line 1 vs Line 13, Line 3 vs Line 13)
+- **Cointegration Testing**: Engle-Granger tests for long-term equilibrium relationships between transit times
+- **ggpairs-style Visualization**: Matrix plots showing time series, distributions, and scatter plots for all pairs
+- **Robust Error Handling**: NaN value detection and removal for reliable correlation calculations
+- **Functional Approach**: Reusable functions for systematic correlation analysis across any pipeline pair
+- Cross-validate transit time relationships against EIA monthly data
 
 ### Geographic Refinement  
 - Identify PADD 1 delivery points closer than GBR (currently using ATJ)
