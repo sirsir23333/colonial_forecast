@@ -60,24 +60,23 @@ jupyter lab
 ## Architecture & Key Files
 
 ### Analysis Notebooks
-- `colonial_pipeline_forcast_line1.ipynb`: Main Line 1 throughput analysis
-- `data/data_pulling.ipynb`: Data acquisition and preprocessing
-- `correlation.ipynb`: Transit time vs incentive arbitrage correlation analysis
+- `colonial_pipeline_forcast_line1.ipynb`: Main Line 1 throughput analysis with the two methods
+- `data/data_pulling.ipynb`: Data acquisition and preprocessing, only can used in windows
+- `correlation.ipynb`: Transit time vs incentive arbitrage correlation analysis, in which - create_transit_correlation_matrix(): Comprehensive correlation matrix visualization with time series, distributions, scatter plots, and statistical overlays
+- Robust error handling for polyfit regression analysis and data quality validation
 
 ### Core Processing
-- `data/ScrapeEmail.py`: Email extraction with configurable From/To parameters (HTN → GBJ)
+- `data/ScrapeEmail.py`: Email extraction with configurable From/To parameters (HTN → GBJ) as well as other start and end point, but can only be used in windows
 - Transit time processing: Latest cycle per year, gas days + hours conversion
 - Monthly aggregation: Average gas transit times by month
 
 ## Work in Progress
 
 ### Correlation Analysis
-- **Comprehensive Pairwise Analysis**: Test all pipeline combinations (Line 1 vs Line 3, Line 1 vs Line 13, Line 3 vs Line 13)
 - **Cointegration Testing**: Engle-Granger tests for long-term equilibrium relationships between transit times
-- **ggpairs-style Visualization**: Matrix plots showing time series, distributions, and scatter plots for all pairs
-- **Robust Error Handling**: NaN value detection and removal for reliable correlation calculations
-- **Functional Approach**: Reusable functions for systematic correlation analysis across any pipeline pair
-- Cross-validate transit time relationships against EIA monthly data
+- **Advanced Visualization**: Built `create_transit_correlation_matrix()` function with ggpairs-style matrix layout  - COMPLETED ✅
+- **Robust Error Handling**: NaN value detection and removal for reliable correlation calculations  - COMPLETED ✅
+- **Cross-validate**: cross validate transit time relationships against EIA monthly data
 
 ### Geographic Refinement  
 - Identify PADD 1 delivery points closer than GBR (currently using ATJ)
