@@ -63,6 +63,7 @@ jupyter lab
 - `colonial_pipeline_forcast_line1.ipynb`: Main Line 1 throughput analysis with the two methods
 - `data/data_pulling.ipynb`: Data acquisition and preprocessing, only can used in windows
 - `correlation.ipynb`: Transit time vs incentive arbitrage correlation analysis, in which - create_transit_correlation_matrix(): Comprehensive correlation matrix visualization with time series, distributions, scatter plots, and statistical overlays
+- **ECM Forecasting Pipeline**: Complete Error Correction Model implementation with `run_pipeline_complete()` main function ✅
 - Robust error handling for polyfit regression analysis and data quality validation
 
 ### Core Processing
@@ -73,9 +74,11 @@ jupyter lab
 ## Work in Progress
 
 ### Correlation Analysis
-- **Cointegration Testing**: Engle-Granger tests for long-term equilibrium relationships between transit times
-- **Advanced Visualization**: Built `create_transit_correlation_matrix()` function with ggpairs-style matrix layout  - COMPLETED ✅
-- **Robust Error Handling**: NaN value detection and removal for reliable correlation calculations  - COMPLETED ✅
+- **Cointegration Testing**: Engle-Granger tests for long-term equilibrium relationships between transit times - COMPLETED ✅
+- **ECM Model Building**: Full Error Correction Model with AIC lag selection and forecast evaluation - COMPLETED ✅
+- **Advanced Visualization**: Built `create_transit_correlation_matrix()` function with ggpairs-style matrix layout - COMPLETED ✅
+- **Results Pipeline**: Complete `run_pipeline_complete()` function with structured outputs - COMPLETED ✅
+- **Robust Error Handling**: NaN value detection and removal for reliable correlation calculations - COMPLETED ✅
 - **Cross-validate**: cross validate transit time relationships against EIA monthly data
 
 ### Geographic Refinement  
@@ -100,11 +103,29 @@ jupyter lab
 - **Plantation (SE) Pipeline**: 0.72 mb/d capacity  
 - **Colonial Share**: 1.37 ÷ (1.37 + 0.72) = 0.656 ≈ **0.65**
 
+## ECM Pipeline Details
+
+### Main Functions (Execute in Order):
+1. `run_pipeline_complete()` - Main orchestrating function for complete workflow
+2. `_create_break_dummies()` - Helper for structural break variables (outages)
+
+### Key Results:
+- **Cointegrating Relationship**: L1 = 5.7113 + 0.1775×L13 + 0.0220×trend (R² = 0.4939)
+- **ECM Performance**: Consistently outperforms Random Walk and ARIMA across all horizons (H1-H4)
+- **Error Correction**: γ = -0.5278, Half-life = 1.3 periods
+
+### Usage:
+```python
+pipeline_results = run_pipeline_complete()  # Default execution
+pipeline_results = run_pipeline_complete(n_test=30, outage_dates=['2023-06-15'])  # Custom params
+```
+
 ## Important Notes
 - Email extraction requires Windows with Outlook COM interface
 - Transit times measured HTN (Houston Terminal) → GBJ (Greensboro Junction)
 - Colonial vs Plantation split based on published pipeline capacities
 - Method assumes Line 1 maximum utilization scenarios
+- ECM pipeline requires existing `pipeline_data` and `correlation_results` variables
 
 # Technical Tool Guidelines
 Jupyter Notebook Editing (NotebookEdit Tool)
