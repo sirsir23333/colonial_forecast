@@ -66,6 +66,22 @@ Stage-by-Stage Rationale
      and returns a structured result dict so notebooks/scripts can consume it
      without re-running the full notebook logic.
 
+Lag Notation in the ECM (p, q, r)
+---------------------------------
+The ECM specification uses three lag counts:
+
+* **p** – number of own-difference lags ΔL1 included on the right-hand side. The
+  minimum is 1 (ΔL1_{t-1}); higher values let the model capture longer memory in
+  Line 1.
+* **q** – number of ΔL13 lags (starting at 0 if contemporaneous effects are
+  allowed). With `allow_contemporaneous=False` the grid starts at 1 so only
+  lagged ΔL13 terms enter.
+* **r** – analogous count for ΔL3 lags when Line 3 is included. Setting
+  `include_L3=False` effectively fixes r at -1 (no terms).
+
+The tuple (p,q,r) reported in logs and metric outputs therefore summarises how
+many past movements of each series feed into the short-run ECM dynamics.
+
 Information-Criterion Choices (AIC, BIC, AICc)
 ---------------------------------------------
 Lag selection inside the ECM is driven by an information criterion passed through
