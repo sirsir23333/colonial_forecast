@@ -62,8 +62,8 @@ jupyter lab
 ### Analysis Notebooks
 - `colonial_pipeline_forcast_line1.ipynb`: Main Line 1 throughput analysis with the two methods
 - `data/data_pulling.ipynb`: Data acquisition and preprocessing, only can used in windows
-- `correlation.ipynb`: Transit time vs incentive arbitrage correlation analysis, in which - create_transit_correlation_matrix(): Comprehensive correlation matrix visualization with time series, distributions, scatter plots, and statistical overlays
-- **ECM Forecasting Pipeline**: Complete Error Correction Model implementation with `run_pipeline_complete()` main function ✅
+- `correlation.ipynb`: Transit time vs incentive arbitrage correlation analysis (now imports helpers from `line1_implied`), including the `create_transit_correlation_matrix()` visualization matrix
+- **ECM Forecasting Pipeline**: Complete Error Correction Model implementation exposed via `line1_implied.run_all.run_pipeline_complete()` ✅
 - Robust error handling for polyfit regression analysis and data quality validation
 
 ### Core Processing
@@ -105,9 +105,13 @@ jupyter lab
 
 ## ECM Pipeline Details
 
-### Main Functions (Execute in Order):
-1. `run_pipeline_complete()` - Main orchestrating function for complete workflow
-2. `_create_break_dummies()` - Helper for structural break variables (outages)
+### Package Layout (`line1_implied/`)
+1. `preparation._prepare_aligned_data` – align common-sample series with trend column
+2. `cointegration._estimate_cointegrating_relation` – fit long-run relationship and residuals
+3. `ecm._build_ecm_model` – select lags, estimate ECM, run diagnostics
+4. `forecast._forecast_evaluation` – rolling multi-horizon evaluation vs baselines
+5. `reporting._display_results/_display_plots/_save_outputs` – console/plot/file outputs
+6. `run_all.run_pipeline_complete` – orchestrator that wires the stages together
 
 ### Key Results:
 - **Cointegrating Relationship**: L1 = 5.7113 + 0.1775×L13 + 0.0220×trend (R² = 0.4939)
@@ -116,8 +120,20 @@ jupyter lab
 
 ### Usage:
 ```python
-pipeline_results = run_pipeline_complete()  # Default execution
-pipeline_results = run_pipeline_complete(n_test=30, outage_dates=['2023-06-15'])  # Custom params
+from line1_implied.run_all import run_pipeline_complete
+
+# Requires pre-populated `pipeline_data` and `correlation_results` dictionaries
+pipeline_results = run_pipeline_complete(pipeline_data, correlation_results)
+
+# Custom parameters example
+pipeline_results = run_pipeline_complete(
+    pipeline_data,
+    correlation_results,
+    n_test=30,
+    exog_nowcast="arima",
+    display_results=False,
+    save_outputs=True,
+)
 ```
 
 ## Important Notes
