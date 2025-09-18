@@ -66,6 +66,40 @@ Stage-by-Stage Rationale
      and returns a structured result dict so notebooks/scripts can consume it
      without re-running the full notebook logic.
 
+Information-Criterion Choices (AIC, BIC, AICc)
+---------------------------------------------
+Lag selection inside the ECM is driven by an information criterion passed through
+`ic_kind`:
+
+* **AIC** (`-2 log L + 2k`) – light penalty on parameters; favours richer models
+  aimed at predictive fit.
+* **BIC** (`-2 log L + k log n`) – heavier penalty as sample grows; tends to pick
+  parsimonious specifications and is consistent for the “true” model when it
+  exists.
+* **AICc** (`AIC + 2k(k+1)/(n-k-1)`) – corrected AIC that guards against small
+  sample overfitting; defaults to AIC behaviour when `n` is large.
+
+Because the Colonial overlap window is short, `ic_kind='AICc'` is often the most
+stable choice; switch to `'BIC'` if you prefer parsimony or `'AIC'` when you have
+more data and want more flexible dynamics.
+
+Handling Missing Exogenous Steps (Nowcasting)
+--------------------------------------------
+Forecasting horizons beyond `t` require a value for ΔL13 (and ΔL3 if included).
+`_forecast_evaluation` and `_build_ecm_model` accept an `exog_nowcast`
+parameter:
+
+* `'ma'` – moving-average nowcast of the recent differences (default).
+* `'arima'` – one-step AR(1) nowcast on the differenced series.
+* `'linear'` (future option) – placeholder for user-supplied deterministic
+  projections.
+
+The choice only affects how the first-step ΔL13/ΔL3 terms are filled when the
+future values are unknown; after h=1 the ECM recursively propagates its own
+predicted levels. For the historical backfill use-case, you can set the nowcast
+method to `'ma'` or treat the exogenous delta as zero when moving backwards in
+time.
+
 When to Consider Alternatives
 -----------------------------
 * If Line 3 transit times become cointegrated with Line 1 (e.g., after structural
