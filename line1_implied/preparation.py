@@ -197,4 +197,98 @@ def _prepare_aligned_data(pipeline_data, correlation_results):
 
     return aligned_data
 
-__all__ = ['_prepare_aligned_data']
+def align_with_l13(pipeline_data, correlation_results=None):
+    """Anchor alignment on Line 13 while flagging missing Line 1/Line 3 values.
+
+    Parameters
+    ----------
+    pipeline_data : dict
+        Dictionary containing at least ``Line13`` along with optional ``Line1``
+        and ``Line3`` DataFrames. Each DataFrame must include ``Date`` and
+        ``Gas Transit Days`` columns.
+    correlation_results : dict, optional
+        Unused placeholder to mirror the signature of :func:`_prepare_aligned_data`.
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame with the full Line 13 date range and columns:
+
+        - ``Date`` – chronological timeline anchored on Line 13
+        - ``L1`` / ``L3`` – observed values where available, NaN otherwise
+        - ``L13`` – Line 13 transit days (complete series)
+        - ``trend`` – linear trend (1, 2, 3, ...)
+        - ``L1_observed`` / ``L3_observed`` – boolean flags for observed vs missing
+
+    Notes
+    -----
+    - Preserves every Line 13 observation (left join for other series)
+    - Designed for historical imputation workflows where missing L1/L3 should be
+      retained instead of dropped
+    - Keeps :func:`_prepare_aligned_data` unchanged for existing pipelines
+    """
+
+    print("🔄 Anchoring alignment on Line 13...")
+    print("=" * 60)
+
+    required_columns = {'Date', 'Gas Transit Days'}
+
+    def _clean_line(line_name):
+        if line_name not in pipeline_data:
+            raise ValueError(f"Missing dataset: {line_name}")
+        line_df = pipeline_data[line_name]
+        if not required_columns.issubset(line_df.columns):
+            missing = required_columns - set(line_df.columns)
+            raise ValueError(f"{line_name} missing columns: {missing}")
+        cleaned = line_df[['Date', 'Gas Transit Days']].copy()
+        cleaned['Date'] = pd.to_datetime(cleaned['Date']).dt.normalize()
+        cleaned = cleaned.dropna(subset=['Date'])
+        cleaned = cleaned.sort_values('Date').drop_duplicates('Date', keep='last')
+        return cleaned
+
+    # Line 13 is mandatory because it provides the anchor timeline
+    line13 = _clean_line('Line13')
+    line13 = line13.dropna(subset=['Gas Transit Days'])
+    if line13.empty:
+        raise ValueError("Line13 contains no valid observations after cleaning")
+
+    print(f"✅ Line13 anchor: {len(line13)} records from {line13['Date'].min().date()} to {line13['Date'].max().date()}")
+
+    base_df = line13.rename(columns={'Gas Transit Days': 'L13'}).reset_index(drop=True)
+    base_df['Date'] = base_df['Date'].dt.normalize()
+    base_df['trend'] = range(1, len(base_df) + 1)
+
+    # Helper to merge a line onto the Line 13 timeline
+    def _merge_line(line_name, col_name):
+        try:
+            cleaned = _clean_line(line_name).dropna(subset=['Gas Transit Days'])
+            cleaned = cleaned.rename(columns={'Gas Transit Days': col_name})
+            print(f"✅ {line_name}: {len(cleaned)} observed records")
+        except ValueError as err:
+            print(f"⚠️  {err}; treating as unavailable for alignment")
+            cleaned = pd.DataFrame(columns=['Date', col_name])
+        return base_df.merge(cleaned[['Date', col_name]], on='Date', how='left')
+
+    base_df = _merge_line('Line1', 'L1')
+    base_df['L1_observed'] = base_df['L1'].notna()
+
+    base_df = _merge_line('Line3', 'L3')
+    base_df['L3_observed'] = base_df['L3'].notna()
+
+    # Summary diagnostics
+    print("\n📋 Alignment summary (Line 13 anchor):")
+    print(f"  • Total timeline length: {len(base_df)} observations")
+    print(f"  • L1 observed: {int(base_df['L1_observed'].sum())} ({base_df['L1_observed'].mean():.1%})")
+    print(f"  • L3 observed: {int(base_df['L3_observed'].sum())} ({base_df['L3_observed'].mean():.1%})")
+
+    for col in ['L13', 'L1', 'L3']:
+        stats = base_df[col].dropna().describe()
+        print(f"  • {col} stats (observed only): count={stats.get('count', 0):.0f}, mean={stats.get('mean', float('nan')):.3f}")
+
+    ordered_columns = ['Date', 'L1', 'L3', 'L13', 'trend', 'L1_observed', 'L3_observed']
+    base_df = base_df[ordered_columns]
+
+    print("\n✅ Alignment complete (Line 13 preserved, observation flags added)")
+    return base_df
+
+__all__ = ['_prepare_aligned_data', 'align_with_l13']

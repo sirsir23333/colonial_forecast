@@ -12,7 +12,7 @@ from .stationarity import (
     _print_stationarity_results,
     analyze_pipeline_stationarity,
 )
-from .preparation import _prepare_aligned_data
+from .preparation import _prepare_aligned_data, align_with_l13
 from .cointegration import _estimate_cointegrating_relation
 from .ecm import _build_ecm_model
 from .forecast import _forecast_evaluation
@@ -29,6 +29,7 @@ __all__ = [
     '_print_stationarity_results',
     'analyze_pipeline_stationarity',
     '_prepare_aligned_data',
+    'align_with_l13',
     '_estimate_cointegrating_relation',
     '_build_ecm_model',
     '_forecast_evaluation',
