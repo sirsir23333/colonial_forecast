@@ -1,5 +1,6 @@
 """Data alignment helpers for ECM pipeline."""
 
+import numpy as np
 import pandas as pd
 
 def _prepare_aligned_data(pipeline_data, correlation_results):
@@ -291,4 +292,111 @@ def align_with_l13(pipeline_data, correlation_results=None):
     print("\n✅ Alignment complete (Line 13 preserved, observation flags added)")
     return base_df
 
-__all__ = ['_prepare_aligned_data', 'align_with_l13']
+def impute_missing_l1(aligned_data, cointegration_results, residual_mode="zero"):
+    """Impute missing Line 1 values using the cointegrating relationship.
+
+    Parameters
+    ----------
+    aligned_data : pandas.DataFrame
+        Output from :func:`align_with_l13` containing columns ``L1``, ``L13``,
+        ``trend`` and the boolean flag ``L1_observed``.
+    cointegration_results : dict
+        Result dictionary returned by
+        :func:`line1_implied.cointegration._estimate_cointegrating_relation`.
+        Must contain ``coefficients`` (with ``β0_intercept``, ``β1_L13``,
+        ``β2_trend``) and optionally ``residuals``.
+    residual_mode : {'zero', 'mean', 'sampled'}, default 'zero'
+        How to treat the error-correction residual when imputing:
+
+        * ``'zero'`` – set the residual adjustment to zero.
+        * ``'mean'`` – add the mean of historical residuals.
+        * ``'sampled'`` – randomly sample residuals (with replacement) from the
+          historical residual distribution.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Copy of *aligned_data* with an additional ``L1_implied`` column that
+        contains the original ``L1`` where observed and imputed values elsewhere.
+
+    Notes
+    -----
+    - The function never overwrites the original ``L1`` column.
+    - Residual sampling falls back to zero adjustment if residuals are missing.
+    - Designed to be idempotent: re-running will overwrite the ``L1_implied``
+      column with the same logic.
+    """
+
+    required_cols = {'L1', 'L13', 'trend', 'L1_observed'}
+    missing_cols = required_cols - set(aligned_data.columns)
+    if missing_cols:
+        raise ValueError(f"aligned_data missing required columns: {missing_cols}")
+
+    coeffs = cointegration_results.get('coefficients', {})
+    try:
+        beta0 = float(coeffs['β0_intercept'])
+        beta1 = float(coeffs['β1_L13'])
+        beta2 = float(coeffs['β2_trend'])
+    except KeyError as err:
+        raise ValueError(f"Missing coefficient in cointegration_results: {err}")
+
+    residuals = cointegration_results.get('residuals')
+    if residuals is not None:
+        residual_series = pd.Series(residuals).dropna()
+    else:
+        residual_series = pd.Series(dtype=float)
+
+    print("🔄 Imputing missing Line 1 observations")
+    print("=" * 60)
+    print(f"  • Residual mode: {residual_mode}")
+
+    if residual_mode not in {'zero', 'mean', 'sampled'}:
+        raise ValueError("residual_mode must be one of {'zero','mean','sampled'}")
+
+    if residual_mode in {'mean', 'sampled'} and residual_series.empty:
+        print("⚠️  No residuals provided; falling back to zero adjustment")
+        residual_mode = 'zero'
+
+    aligned = aligned_data.copy()
+
+    missing_mask = ~aligned['L1_observed']
+    observed_mask = aligned['L1_observed']
+
+    base_values = beta0 + beta1 * aligned['L13'] + beta2 * aligned['trend']
+
+    if residual_mode == 'zero':
+        residual_adjustment = 0.0
+    elif residual_mode == 'mean':
+        residual_adjustment = residual_series.mean()
+    else:  # sampled
+        sampled = np.random.choice(residual_series.values, size=missing_mask.sum(), replace=True)
+        residual_adjustment = pd.Series(sampled, index=aligned[missing_mask].index)
+
+    aligned['L1_implied'] = aligned['L1']
+
+    if missing_mask.any():
+        if residual_mode == 'sampled':
+            adjustments = residual_adjustment
+        else:
+            adjustments = residual_adjustment
+        aligned.loc[missing_mask, 'L1_implied'] = base_values[missing_mask] + adjustments
+
+    if observed_mask.any():
+        aligned.loc[observed_mask, 'L1_implied'] = aligned.loc[observed_mask, 'L1']
+
+    imputed_count = int(missing_mask.sum())
+    observed_count = int(observed_mask.sum())
+    print(f"  • Observed L1 values preserved: {observed_count}")
+    print(f"  • Imputed L1 values created: {imputed_count}")
+
+    if imputed_count:
+        stats = aligned.loc[missing_mask, 'L1_implied'].describe()
+        print("  • Imputed stats:")
+        print(stats[['count', 'mean', 'std', 'min', 'max']].round(4).to_dict())
+    else:
+        print("  • No missing values detected; L1_implied matches original L1")
+
+    return aligned
+
+
+__all__ = ['_prepare_aligned_data', 'align_with_l13', 'impute_missing_l1']
