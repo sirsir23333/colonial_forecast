@@ -22,6 +22,33 @@ Why Cointegration Matters
   than economic linkage. Cointegration allows us to keep the long-run signal
   while modelling deviations explicitly.
 
+Assumptions & Diagnostic Tests
+------------------------------
+**Stationarity & Integration Order**
+- We expect the raw series to be integrated of order one (I(1)). In practice,
+  ADF/KPSS on L1 and L13 can be inconclusive individually, but the first
+  differences (ΔL1, ΔL13) are clearly stationary.
+- Whenever the unit-root evidence is mixed, we rely on the Engle–Granger step:
+  a stationary cointegration residual `u_t` confirms the equilibrium relation,
+  validating the ECM setup even when individual tests are borderline.
+
+**Cointegration**
+- `_estimate_cointegrating_relation` runs the long-run OLS, reports residual
+  diagnostics (Durbin–Watson, residual plots), and the subsequent ECM stage uses
+  that residual. The residual must be stationary; if not, the ECM should not be
+  used.
+
+**ECM Diagnostics**
+- `_build_ecm_model` checks:
+  - Ljung–Box on residual autocorrelation
+  - Breusch–Pagan for heteroskedasticity
+  - Jarque–Bera for normality (informational; ECM can tolerate mild
+    non-normality)
+  - Significance and sign of the error-correction coefficient (γ < 0) to confirm
+    mean reversion.
+- If diagnostics fail, adjust lag orders, include structural breaks, or revisit
+  the underlying data.
+
 Why an Error-Correction Model (ECM)
 -----------------------------------
 * Once the long-run equilibrium is identified, we need a dynamic model that
